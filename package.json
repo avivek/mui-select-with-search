@@ -1,5 +1,5 @@
 {
-  "name": "react-mui-select-search-multi",
+  "name": "mui-select-with-search",
   "version": "0.1.1",
   "description": "Select component",
   "main": "./lib/index.js",
