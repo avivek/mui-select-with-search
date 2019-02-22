@@ -1,3 +1,3 @@
-import selectAutoComplete from './CustomSelect.jsx'
+import selectAutoComplete from './CustomSelect'
 
 export default selectAutoComplete;
