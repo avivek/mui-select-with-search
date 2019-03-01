@@ -174,7 +174,7 @@ class SelectAutoComplete extends React.Component{
             selectedValue: null,
           };
         if(this.props.value){
-            this.state = {selectedValue:value};
+            this.state = {selectedValue:this.props.value};
         }
     }
     
