@@ -4,10 +4,7 @@ import Select from 'react-select';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import NoSsr from '@material-ui/core/NoSsr';
-import TextField from '@material-ui/core/TextField';
-import Paper from '@material-ui/core/Paper';
-import Chip from '@material-ui/core/Chip';
-import MenuItem from '@material-ui/core/MenuItem';
+import {TextField,Paper,Chip,MenuItem,FormControlLabel,Checkbox} from '@material-ui/core';
 import CancelIcon from '@material-ui/icons/Cancel';
 import { emphasize } from '@material-ui/core/styles/colorManipulator';
 
@@ -107,6 +104,24 @@ function Option(props) {
   );
 }
 
+function checkBoxOption(props){
+  return (
+    <MenuItem
+      buttonRef={props.innerRef}
+      selected={props.isFocused}
+      component="div"
+      style={{
+        fontWeight: props.isSelected ? 700 : 400,
+      }}
+      {...props.innerProps}
+    >
+    <FormControlLabel control = {<Checkbox checked={props.isSelected} color="primary"/>} label = {props.children}/>
+     
+    </MenuItem>
+  );
+
+}
+
 function Placeholder(props) {
   return (
     <Typography
@@ -145,6 +160,20 @@ function MultiValue(props) {
   );
 }
 
+function checkBoxMutliValue(props){
+  return (
+    props.getValue()[0] === props.data ?
+    (<Chip
+      tabIndex={-1}
+      label={props.getValue().length + ' selected'}
+      className={classNames(props.selectProps.classes.chip, {
+        [props.selectProps.classes.chipFocused]: props.isFocused,
+      })}
+    />):""
+  );
+
+}
+
 function Menu(props) {
   return (
     <Paper square className={props.selectProps.classes.paper} {...props.innerProps}>
@@ -163,6 +192,18 @@ const components = {
   SingleValue,
   ValueContainer,
 };
+
+const checkBoxComponents = {
+  Control,
+  Menu,
+  MultiValue:checkBoxMutliValue,
+  NoOptionsMessage,
+  Option:checkBoxOption,
+  Placeholder,
+  SingleValue,
+  ValueContainer,
+
+}
 
 class SelectAutoComplete extends React.Component{
 
@@ -189,7 +230,9 @@ class SelectAutoComplete extends React.Component{
       };
 
     render(){
-        const { classes, theme,suggestions,value,placeholder,onChange,...other } = this.props;
+        const { classes, theme,suggestions,value,placeholder,onChange,checkBoxStyled,isMulti,hideSelectedOptions,...other } = this.props;
+
+        let selectComponents = components;
 
         const selectStyles = {
             input: base => ({
@@ -200,16 +243,25 @@ class SelectAutoComplete extends React.Component{
               },
             }),
           };
+          let isMutlipleAllowed = isMulti;
+          let isHideSelectOptions = hideSelectedOptions;
+          if(checkBoxStyled)  {
+            selectComponents = checkBoxComponents;
+            isMutlipleAllowed=true;
+            isHideSelectOptions=false;
+          }   
           return(
             <div className={classes.root}>
             <NoSsr>
               <Select
                 classes={classes}
                 styles={selectStyles}
-                components={components}
+                components={selectComponents}
                 value={this.state.selectedValue}
                 placeholder={placeholder}
                 onChange={this.handleChange}
+                isMulti={isMutlipleAllowed}
+                hideSelectedOptions={isHideSelectOptions}
                 {...other}
               />
             </NoSsr>
