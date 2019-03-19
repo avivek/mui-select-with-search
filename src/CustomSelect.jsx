@@ -207,30 +207,10 @@ const checkBoxComponents = {
 
 class SelectAutoComplete extends React.Component{
 
-    constructor(props)
-    {
-        super(props);
-
-        this.state = {
-            selectedValue: null,
-          };
-        if(this.props.value){
-            this.state = {selectedValue:this.props.value};
-        }
-    }
     
-    handleChange = value => {
-        this.setState({
-            selectedValue: value,
-        });
-        if(this.props.onChange)
-        {
-            this.props.onChange(value);
-        };
-      };
 
     render(){
-        const { classes, theme,suggestions,value,placeholder,onChange,checkBoxStyled,isMulti,hideSelectedOptions,...other } = this.props;
+        const { classes, theme,suggestions,placeholder,checkBoxStyled,isMulti,hideSelectedOptions,...other } = this.props;
 
         let selectComponents = components;
 
@@ -257,7 +237,6 @@ class SelectAutoComplete extends React.Component{
                 classes={classes}
                 styles={selectStyles}
                 components={selectComponents}
-                value={this.state.selectedValue}
                 placeholder={placeholder}
                 onChange={this.handleChange}
                 isMulti={isMutlipleAllowed}
